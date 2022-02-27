@@ -53,7 +53,7 @@ class Ricochet:
         return {"name": color, "row": idx_row, "col": idx_col}
 
     def availableMoves(self, agent):
-        """computes all available endpositions for the moves as a dict.
+        """computes all available endpositions for the moves as a dict. An Agent cannot collide with any wall or agent. 
 
         Args:
             agent (dict): yellow red green blue agent
