@@ -15,6 +15,11 @@ class Ricochet:
         self.green = self.initAgent('G')
 
     def initBoard(self):
+        """Gernerate board
+
+        Returns:
+            numpy array: cells are either empty (0) or have walls in the edges of the cell (north 'N' east south west)
+        """
         # TODO: Should be a fixed setup. Take a pic of the board and implement exactly that board.
         board = np.zeros((self.shape, self.shape), dtype=object)
         board[:, :] = '0'
@@ -30,6 +35,15 @@ class Ricochet:
         return board
 
     def initAgent(self, color):
+        """initialise Agents with start position
+
+        Args:
+            color (Char): 'Y','G','R','B'
+
+        Returns:
+            dict: with name and position 
+        """
+
         idx_row, idx_col = self.randomSquare()
         # two agents cannot be in the same square
         if 'AG' in self.board[idx_row, idx_col]:
@@ -39,10 +53,13 @@ class Ricochet:
         return {"name": color, "row": idx_row, "col": idx_col}
 
     def availableMoves(self, agent):
-        """returns all available endpositions for the moves as a dict.
+        """computes all available endpositions for the moves as a dict.
 
         Args:
-            agent (_type_): _description_
+            agent (dict): yellow red green blue agent
+
+        Returns:
+            dict: move: position
         """
 
         # Move up
