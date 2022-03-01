@@ -1,9 +1,11 @@
 # %%
+from importlib.resources import path
 import numpy as np
 import random
 
 
 class Ricochet:
+    #TODO: Update board to not include agent positions, Agents only dicts
     def __init__(self, shape):
         self.shape = shape
 
@@ -53,6 +55,7 @@ class Ricochet:
         return {"name": color, "row": idx_row, "col": idx_col}
 
     def availableMoves(self, agent):
+        #TODO: Work with 
         """computes all available endpositions for the moves as a dict. An Agent cannot collide with any wall or agent. 
 
         Args:
@@ -159,6 +162,16 @@ class Ricochet:
         idx_row = random.randint(0, self.shape-1)
         return (idx_row, idx_col)
 
+class Solver
+def __init__(GAME):
+    def genericAlgo(self, GAME.board, agent_dict, goal):
+        return path
+    
+game = Ricochet(board_setup=1)
+
+Solver(game)
+
+for solver.path do move
 
 b1 = Ricochet(10)
 print(b1.board)
@@ -172,3 +185,6 @@ print("")
 b1.move(b1.yellow,'UP')
 print(b1.board)
 # %%
+di = {(0,9):"EN"}
+
+print(di[(1,9)])
