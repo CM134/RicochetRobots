@@ -26,6 +26,7 @@ class Ricochet:
         self.agent_list.append(self.green)
         
         self.goal_list = goal_list
+        self.setGoal()
         
 
     def initBoard(self):
@@ -68,6 +69,8 @@ class Ricochet:
             
         return {"name": color, "row": idx_row, "col": idx_col}
         
+    def setGoal(self):
+        self.goal = random.choice(goal_list)
         
     def availableMoves(self, agent):
         """computes all available endpositions for the moves as a dict. An Agent cannot collide with any wall or agent. 
@@ -195,7 +198,7 @@ if __name__ == "__main__":
     
     b1 = Ricochet()
     print(b1.board)
-    print(b1.board[-1,:])
+    print(b1.goal)
     print(b1.agent_list)
     print(b1.yellow)
     print('\n')
