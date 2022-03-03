@@ -6,6 +6,7 @@ import pygame
 WIDTH, HEIGHT = 800,800
 ROWS, COLS = 16,16
 SQUARE_SIZE = WIDTH//COLS
+WIDER_WIDTH = 1000
 
 # RGB
 RED = (255,0,0)
@@ -16,3 +17,7 @@ GREY = (128,128,128)
 GREEN = (0,255,0)
 
 ####################
+
+PADDING = 10
+OUTLINE = 2
+radius = SQUARE_SIZE//2 - PADDING
