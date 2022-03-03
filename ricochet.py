@@ -134,11 +134,11 @@ class Ricochet:
                     l_row = agent["row"]
                     l_col = col+1
                     break
-            if (('E' in self.board[agent["row"], col]) and (col != agent["col"])):
+            if ('E' in self.board[agent["row"], col]):
                 l_row = agent["row"]
                 l_col = col+1
                 break
-            elif ('W' in self.board[row, agent["col"]]):
+            elif ('W' in self.board[row, agent["col"]] and (col != agent["col"])):
                 l_row = agent["row"]
                 l_col = col
                 break
@@ -155,11 +155,11 @@ class Ricochet:
                     r_row = agent["row"]
                     r_col = col-1
                     break
-            if (('W' in self.board[agent["row"], col]) and (col != agent["col"])):
+            if ('W' in self.board[agent["row"], col]):
                 r_row = agent["row"]
                 r_col = col-1
                 break
-            elif ('E' in self.board[row, agent["col"]]):
+            elif ('E' in self.board[row, agent["col"]] and (col != agent["col"])):
                 r_row = agent["row"]
                 r_col = col
                 break

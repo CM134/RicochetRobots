@@ -9,11 +9,14 @@ class Visualizer:
     PADDING = 10
     OUTLINE = 2
     radius = SQUARE_SIZE//2 - PADDING
-    def __init__(self,game):
-        self.game = game
+    def __init__(self,instance):
+        self.game = instance.board
         print(self.game)
+        self.ricochet = instance
         #print(self.game[0,:])
         #print(self.game[:,0])
+        self.selected = None
+
         
 
     def draw_board(self,win):
@@ -33,7 +36,6 @@ class Visualizer:
                     #print(center[0]-SQUARE_SIZE//2)            
                     pygame.draw.line(win, RED, (center[0]-SQUARE_SIZE//2,center[1]-SQUARE_SIZE//2),(center[0]+SQUARE_SIZE//2,center[1]-SQUARE_SIZE//2), width=5)
                    
-                
                 if 'S' in self.game[row,col]:
                     pygame.draw.line(win, RED, (center[0]-SQUARE_SIZE//2,center[1]+SQUARE_SIZE//2),(center[0]+SQUARE_SIZE//2,center[1]+SQUARE_SIZE//2), width=5)
 
@@ -42,7 +44,39 @@ class Visualizer:
 
                 if 'W' in self.game[row,col]:
                     pygame.draw.line(win, RED, (center[0]-SQUARE_SIZE//2,center[1]+SQUARE_SIZE//2),(center[0]-SQUARE_SIZE//2,center[1]-SQUARE_SIZE//2), width=5)
-                    
+                
+                # draw agents
+                for agent in self.ricochet.agent_list:
+                    if agent["name"] == 'Y':
+                        agent_color = (255,255,0)
+                    if agent["name"] == 'G':
+                        agent_color = (0,255,0) 
+                    if agent["name"] == 'B':
+                        agent_color = (0,0,255) 
+                    if agent["name"] == 'R':
+                        agent_color = (255,0,0)            
+
+                    agent_center = np.array([(SQUARE_SIZE//2)+SQUARE_SIZE*agent['col'],(SQUARE_SIZE//2)+SQUARE_SIZE*agent['row']])
+                    pygame.draw.circle(win,agent_color, (agent_center[0],agent_center[1]), radius)
+
+
+                # draw goals
+
+                for goal in self.ricochet.goal_list:
+                    if goal["color"] == 'Y':
+                        agent_color = (255,255,0)
+                    if goal["color"] == 'G':
+                        agent_color = (0,255,0) 
+                    if goal["color"] == 'B':
+                        agent_color = (0,0,255) 
+                    if goal["color"] == 'R':
+                        agent_color = (255,0,0)
+
+
+
+
+
+                
 
 
 

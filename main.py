@@ -30,7 +30,8 @@ def main():
 	clock = pygame.time.Clock()
 	#b1 = Ricochet(16) 
 	#print(b1)
-	b1 = Visualizer(Ricochet(16).board)
+	game = Ricochet()
+	visu = Visualizer(game)
 	#b1.draw_squares(WIN)
 	
 	while run:
@@ -40,7 +41,37 @@ def main():
 			if event.type == pygame.QUIT:
 				run = False
 
-		b1.draw_board(WIN)
+		keys_pressed = pygame.key.get_pressed()
+
+		if keys_pressed[pygame.K_r]:
+			visu.selected = game.red
+		if keys_pressed[pygame.K_b]:
+			visu.selected = game.blue
+		if keys_pressed[pygame.K_y]:
+			visu.selected = game.yellow
+		if keys_pressed[pygame.K_g]:
+			visu.selected = game.green
+
+		if keys_pressed[pygame.K_LEFT]:
+			game.move(visu.selected, 'LEFT')
+		if keys_pressed[pygame.K_RIGHT]:
+			game.move(visu.selected, 'RIGHT')
+		if keys_pressed[pygame.K_UP]:
+			game.move(visu.selected, 'UP')
+		if keys_pressed[pygame.K_DOWN]:
+			game.move(visu.selected, 'DOWN')
+
+
+		#TODO: visu which brick (blick)
+		# show available moves
+		# show how many moves
+		# goal check -> assign new goal game.setGoal()
+		# timer
+		# show goal in the middel
+		# draw all goals
+		
+
+		visu.draw_board(WIN)
 		pygame.display.update()
 	pygame.quit()
 
