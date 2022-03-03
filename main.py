@@ -1,5 +1,4 @@
 # %%
-# from importlib.resources import path
 from ricochet import Ricochet
 
 
