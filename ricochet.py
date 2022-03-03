@@ -1,40 +1,53 @@
 # %%
-from importlib.resources import path
+
 import numpy as np
 import random
 
+from board_layouts.board_1 import board, goal_list, SIZE
 
 class Ricochet:
-    #TODO: Update board to not include agent positions, Agents only dicts
-    def __init__(self, shape):
-        self.shape = shape
+    def __init__(self):
+        self.shape = SIZE
 
         # create board
-        self.board = self.initBoard()
+        self.board = board
+        
+        self.agent_list = [] 
         self.yellow = self.initAgent('Y')
+        self.agent_list.append(self.yellow)
+        
         self.red = self.initAgent('R')
+        self.agent_list.append(self.red)
+        
         self.blue = self.initAgent('B')
+        self.agent_list.append(self.blue)
+        
         self.green = self.initAgent('G')
+        self.agent_list.append(self.green)
+        
+        self.goal_list = goal_list
+        self.setGoal()
+        
 
     def initBoard(self):
-        """Gernerate board
+        """Generate board (not used at the moment. In the future we can make different boards and choose the right setup from here )
 
         Returns:
             numpy array: cells are either empty (0) or have walls in the edges of the cell (north 'N' east south west)
         """
-        # TODO: Should be a fixed setup. Take a pic of the board and implement exactly that board.
-        board = np.zeros((self.shape, self.shape), dtype=object)
-        board[:, :] = '0'
-        # Assign some random walls
-        for _ in range(0, self.shape*3):
-            idx_row, idx_col = self.randomSquare()
-            if (board[idx_row, idx_col] != '0'):
-                board[idx_row,
-                      idx_col] += (random.choice(['S', 'W', 'N', 'E']))
-            else:
-                board[idx_row, idx_col] = random.choice(['S', 'W', 'N', 'E'])
+        # board = np.zeros((self.shape, self.shape), dtype=object)
+        # board[:, :] = '0'
+        # # Assign some random walls
+        # for _ in range(0, self.shape*3):
+        #     idx_row, idx_col = self.randomSquare()
+        #     if (board[idx_row, idx_col] != '0'):
+        #         board[idx_row,
+        #               idx_col] += (random.choice(['S', 'W', 'N', 'E']))
+        #     else:
+        #         board[idx_row, idx_col] = random.choice(['S', 'W', 'N', 'E'])
 
-        return board
+        # return board
+        pass
 
     def initAgent(self, color):
         """initialise Agents with start position
@@ -47,15 +60,19 @@ class Ricochet:
         """
 
         idx_row, idx_col = self.randomSquare()
+        
         # two agents cannot be in the same square
-        # if 'AG' in self.board[idx_row, idx_col]:
-        #     self.initAgent(color)
-        # else:
-        #     self.board[idx_row, idx_col] += ':AG:'+color
+        for agent in self.agent_list:
+            if len(self.agent_list)<1:
+                if ((agent['row'] == idx_row) and (agent['col']==idx_col)):
+                    self.initAgent(color)
+            
         return {"name": color, "row": idx_row, "col": idx_col}
-
+        
+    def setGoal(self):
+        self.goal = random.choice(goal_list)
+        
     def availableMoves(self, agent):
-        #TODO: Work with 
         """computes all available endpositions for the moves as a dict. An Agent cannot collide with any wall or agent. 
 
         Args:
@@ -67,6 +84,13 @@ class Ricochet:
 
         # Move up
         for row in range(agent["row"], -1, -1):
+            for other in self.agent_list:
+                if other['name'] == agent['name']:
+                    continue
+                elif ((other['col'] == agent['col'] and other['row']== row)):
+                    u_row = row+1
+                    u_col = agent["col"]
+                    break
             if (('S' in self.board[row, agent["col"]]) and (row != agent["row"])):
                 u_row = row+1
                 u_col = agent["col"]
@@ -75,16 +99,20 @@ class Ricochet:
                 u_row = row
                 u_col = agent["col"]
                 break
-            elif (('AG' in self.board[row, agent["col"]]) and (row != agent["row"])):
-                u_row = row+1
-                u_col = agent["col"]
-                break
+
             elif (row == 0):
                 u_row = row
                 u_col = agent["col"]
 
         # Move down
         for row in range(agent["row"], self.shape):
+            for other in self.agent_list:
+                if other['name'] == agent['name']:
+                    continue
+                elif ((other['col'] == agent['col'] and other['row']== row)):
+                    d_row = row-1
+                    d_col = agent["col"]
+                    break
             if (('N' in self.board[row, agent["col"]]) and (row != agent["row"])):
                 d_row = row-1
                 d_col = agent["col"]
@@ -93,16 +121,19 @@ class Ricochet:
                 d_row = row
                 d_col = agent["col"]
                 break
-            elif (('AG' in self.board[row, agent["col"]]) and (row != agent["row"])):
-                d_row = row-1
-                d_col = agent["col"]
-                break
             elif (row == self.shape-1):
                 d_row = row
                 d_col = agent["col"]
 
         # Move left
         for col in range(agent["col"], -1, -1):
+            for other in self.agent_list:
+                if other['name'] == agent['name']:
+                    continue
+                elif ((other['row'] == agent['row'] and other['col']== col)):
+                    l_row = agent["row"]
+                    l_col = col+1
+                    break
             if (('E' in self.board[agent["row"], col]) and (col != agent["col"])):
                 l_row = agent["row"]
                 l_col = col+1
@@ -111,16 +142,19 @@ class Ricochet:
                 l_row = agent["row"]
                 l_col = col
                 break
-            elif (('AG' in self.board[agent["row"], col]) and (col != agent["col"])):
-                l_row = agent["row"]
-                l_col = col+1
-                break
             elif (col == 0):
                 l_row = agent["row"]
                 l_col = col
 
         # Move right
         for col in range(agent["col"], self.shape):
+            for other in self.agent_list:
+                if other['name'] == agent['name']:
+                    continue
+                elif ((other['row'] == agent['row'] and other['col']== col)):
+                    r_row = agent["row"]
+                    r_col = col-1
+                    break
             if (('W' in self.board[agent["row"], col]) and (col != agent["col"])):
                 r_row = agent["row"]
                 r_col = col-1
@@ -128,10 +162,6 @@ class Ricochet:
             elif ('E' in self.board[row, agent["col"]]):
                 r_row = agent["row"]
                 r_col = col
-                break
-            elif(('AG' in self.board[agent["row"], col]) and (col != agent["col"])):
-                r_row = agent["row"]
-                r_col = col-1
                 break
             elif (col == self.shape-1):
                 r_row = agent["row"]
@@ -163,18 +193,25 @@ class Ricochet:
         return (idx_row, idx_col)
 
 
-
+#%%
 if __name__ == "__main__":
     
-    b1 = Ricochet(10)
+    b1 = Ricochet()
     print(b1.board)
+    print(b1.goal)
+    print(b1.agent_list)
     print(b1.yellow)
     print('\n')
-    # b1.yellow["row"] = 0
-    # b1.yellow["col"] = 1
-    # b1.board[0, :] = "S"
+    # # b1.yellow["row"] = 0
+    # # b1.yellow["col"] = 1
+    # # b1.board[0, :] = "S"
     print(b1.availableMoves(b1.yellow))
     print("")
     b1.move(b1.yellow,'UP')
-    print(b1.board)
+    print(b1.yellow)
+    # print(b1.board)
+# %%
+
+
+
 # %%

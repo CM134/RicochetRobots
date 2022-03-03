@@ -1,5 +1,4 @@
 # %%
-# from importlib.resources import path
 from ricochet import Ricochet
 from visualizer import Visualizer
 from constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, BLUE
