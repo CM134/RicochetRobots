@@ -122,7 +122,7 @@ def main():
 
 		#### Celebrate we made it to the goal
 
-		print(goal_list[0])#['color'])
+		# print(goal_list[0])#['color'])
 
 		visu.draw_board(WIN)
 

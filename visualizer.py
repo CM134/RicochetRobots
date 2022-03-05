@@ -50,20 +50,6 @@ class Visualizer:
                 if 'W' in self.game[row,col]:
                     pygame.draw.line(win, BLACK, (center[0]-SQUARE_SIZE//2,center[1]+SQUARE_SIZE//2),(center[0]-SQUARE_SIZE//2,center[1]-SQUARE_SIZE//2), width=5)
                 
-                # draw agents
-                for agent in self.ricochet.agent_list:
-                    if agent["name"] == 'Y':
-                        agent_color = (255,255,0)
-                    if agent["name"] == 'G':
-                        agent_color = (0,255,0) 
-                    if agent["name"] == 'B':
-                        agent_color = (0,0,255) 
-                    if agent["name"] == 'R':
-                        agent_color = (255,0,0)            
-
-                    agent_center = np.array([(SQUARE_SIZE//2)+SQUARE_SIZE*agent['col'],(SQUARE_SIZE//2)+SQUARE_SIZE*agent['row']])
-                    pygame.draw.circle(win,agent_color, (agent_center[0],agent_center[1]), radius)
-
 
                 # draw goals
 
@@ -84,7 +70,21 @@ class Visualizer:
                     win.blit(goal_number, goal_center)
 
                     
+                # draw agents
+                for agent in self.ricochet.agent_list:
+                    if agent["name"] == 'Y':
+                        agent_color = (255,255,0)
+                    if agent["name"] == 'G':
+                        agent_color = (0,255,0) 
+                    if agent["name"] == 'B':
+                        agent_color = (0,0,255) 
+                    if agent["name"] == 'R':
+                        agent_color = (255,0,0)            
 
+                    agent_center = np.array([(SQUARE_SIZE//2)+SQUARE_SIZE*agent['col'],(SQUARE_SIZE//2)+SQUARE_SIZE*agent['row']])
+                    pygame.draw.circle(win,agent_color, (agent_center[0],agent_center[1]), radius)
+
+                
                 # Draw Center goal 
                 pygame.draw.rect(win,(173,216,230), (HEIGHT//2-SQUARE_SIZE,WIDTH//2-SQUARE_SIZE,2*SQUARE_SIZE,2*SQUARE_SIZE))
 

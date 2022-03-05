@@ -61,9 +61,19 @@ class Ricochet:
 
         idx_row, idx_col = self.randomSquare()
         
+        # check if inside the center square:
+        if idx_row == 7 and idx_col == 7:
+            self.initAgent(color)
+        elif idx_row == 7 and idx_col == 8:
+            self.initAgent(color)
+        elif idx_row == 8 and idx_col == 7:
+            self.initAgent(color)
+        elif idx_row == 8 and idx_col == 8:
+            self.initAgent(color)
+        
         # two agents cannot be in the same square
         for agent in self.agent_list:
-            if len(self.agent_list)<1:
+            if len(self.agent_list)>0:
                 if ((agent['row'] == idx_row) and (agent['col']==idx_col)):
                     self.initAgent(color)
             
@@ -83,6 +93,7 @@ class Ricochet:
         """
 
         # Move up
+        agent_hit = False
         for row in range(agent["row"], -1, -1):
             for other in self.agent_list:
                 if other['name'] == agent['name']:
@@ -90,7 +101,10 @@ class Ricochet:
                 elif ((other['col'] == agent['col'] and other['row']== row)):
                     u_row = row+1
                     u_col = agent["col"]
+                    agent_hit = True
                     break
+            if agent_hit:  # didn't know how to break a loop twice
+                break
             if (('S' in self.board[row, agent["col"]]) and (row != agent["row"])):
                 u_row = row+1
                 u_col = agent["col"]
@@ -99,20 +113,25 @@ class Ricochet:
                 u_row = row
                 u_col = agent["col"]
                 break
-
             elif (row == 0):
                 u_row = row
                 u_col = agent["col"]
+                break
 
         # Move down
+        agent_hit = False
         for row in range(agent["row"], self.shape):
+            
             for other in self.agent_list:
                 if other['name'] == agent['name']:
                     continue
                 elif ((other['col'] == agent['col'] and other['row']== row)):
                     d_row = row-1
                     d_col = agent["col"]
+                    agent_hit = True
                     break
+            if agent_hit:
+                break
             if (('N' in self.board[row, agent["col"]]) and (row != agent["row"])):
                 d_row = row-1
                 d_col = agent["col"]
@@ -124,48 +143,61 @@ class Ricochet:
             elif (row == self.shape-1):
                 d_row = row
                 d_col = agent["col"]
+                break
 
         # Move left
+        agent_hit = False
         for col in range(agent["col"], -1, -1):
+            
             for other in self.agent_list:
                 if other['name'] == agent['name']:
                     continue
                 elif ((other['row'] == agent['row'] and other['col']== col)):
                     l_row = agent["row"]
                     l_col = col+1
+                    agent_hit = True
                     break
-            if ('E' in self.board[agent["row"], col]):
+            if agent_hit:
+                break
+            if ('E' in self.board[agent["row"], col] and (col != agent["col"])):
                 l_row = agent["row"]
                 l_col = col+1
                 break
-            elif ('W' in self.board[row, agent["col"]] and (col != agent["col"])):
+            elif ('W' in self.board[agent["row"], col]):
                 l_row = agent["row"]
                 l_col = col
                 break
             elif (col == 0):
                 l_row = agent["row"]
                 l_col = col
+                break
 
         # Move right
+        agent_hit = False
         for col in range(agent["col"], self.shape):
+            
             for other in self.agent_list:
                 if other['name'] == agent['name']:
                     continue
                 elif ((other['row'] == agent['row'] and other['col']== col)):
                     r_row = agent["row"]
                     r_col = col-1
+                    agent_hit = True
                     break
-            if ('W' in self.board[agent["row"], col]):
+            if agent_hit:      
+                break
+            if ('W' in self.board[agent["row"], col] and (col != agent["col"])):
                 r_row = agent["row"]
                 r_col = col-1
                 break
-            elif ('E' in self.board[row, agent["col"]] and (col != agent["col"])):
+            elif ('E' in self.board[agent["row"], col]):
                 r_row = agent["row"]
                 r_col = col
-                break
+                break 
             elif (col == self.shape-1):
                 r_row = agent["row"]
                 r_col = col
+                break
 
         return {'UP': (u_row, u_col),
                 'DOWN': (d_row, d_col),
