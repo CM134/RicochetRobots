@@ -13,6 +13,7 @@ class Solver:
         self.agent = getattr(copy.deepcopy(GAME), self.color)
         print(self.agent)
         self.path = self.BFS(GAME)
+        self.path_length = 0
 
     def BFS(self, GAME):
         goal = ((self.goal["row"], self.goal["col"]))
@@ -26,7 +27,6 @@ class Solver:
         path[root_pos] = []
 
         for i in range(100):
-            print(i)
             pos = queue.pop(0)
             self.agent['row'] = pos[0]
             self.agent['col'] = pos[1]
@@ -46,12 +46,16 @@ class Solver:
                     visited.append(move_dir)
                     path[move_dir] = path[pos].copy()
                     path[move_dir].append(dir)
-    
-game = Ricochet()
-print(game.goal)
-solve = Solver(game)
+                    print("Depth: ", len(path[move_dir]))
+                    self.path_length = len(path[move_dir])
+                    
 
-print(solve.agent)
-print(solve.goal)
-print(solve.path)
-#for solver.path do move
+if __name__ == "__main__":
+    game = Ricochet()
+    print(game.goal)
+    solve = Solver(game)
+
+    print(solve.agent)
+    print(solve.goal)
+    print(solve.path)
+    #for solver.path do move

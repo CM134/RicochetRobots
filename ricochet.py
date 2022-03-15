@@ -204,6 +204,81 @@ class Ricochet:
                 'LEFT': (l_row, l_col),
                 'RIGHT': (r_row, r_col)}
 
+    def availableMovesEmptyBoard(self, agent):
+        """computes all available endpositions for the moves as a dict. An Agent cannot collide with any wall or agent. 
+
+        Args:
+            agent (dict): yellow red green blue agent
+
+        Returns:
+            dict: move: position
+        """
+
+        # Move up
+        for row in range(agent["row"], -1, -1):
+            if (('S' in self.board[row, agent["col"]]) and (row != agent["row"])):
+                u_row = row+1
+                u_col = agent["col"]
+                break
+            elif ('N' in self.board[row, agent["col"]]):
+                u_row = row
+                u_col = agent["col"]
+                break
+            elif (row == 0):
+                u_row = row
+                u_col = agent["col"]
+                break
+
+        # Move down
+        for row in range(agent["row"], self.shape):
+            if (('N' in self.board[row, agent["col"]]) and (row != agent["row"])):
+                d_row = row-1
+                d_col = agent["col"]
+                break
+            elif ('S' in self.board[row, agent["col"]]):
+                d_row = row
+                d_col = agent["col"]
+                break
+            elif (row == self.shape-1):
+                d_row = row
+                d_col = agent["col"]
+                break
+
+        # Move left
+        for col in range(agent["col"], -1, -1):
+            if ('E' in self.board[agent["row"], col] and (col != agent["col"])):
+                l_row = agent["row"]
+                l_col = col+1
+                break
+            elif ('W' in self.board[agent["row"], col]):
+                l_row = agent["row"]
+                l_col = col
+                break
+            elif (col == 0):
+                l_row = agent["row"]
+                l_col = col
+                break
+
+        # Move right
+        for col in range(agent["col"], self.shape):
+            if ('W' in self.board[agent["row"], col] and (col != agent["col"])):
+                r_row = agent["row"]
+                r_col = col-1
+                break
+            elif ('E' in self.board[agent["row"], col]):
+                r_row = agent["row"]
+                r_col = col
+                break 
+            elif (col == self.shape-1):
+                r_row = agent["row"]
+                r_col = col
+                break
+
+        return {'UP': (u_row, u_col),
+                'DOWN': (d_row, d_col),
+                'LEFT': (l_row, l_col),
+                'RIGHT': (r_row, r_col)}
+    
     def move(self, agent, move):
         """moves the agent in direction specified and updates the 
 
@@ -216,6 +291,15 @@ class Ricochet:
         self.board[agent["row"], agent["col"]] = self.board[agent["row"], agent["col"]].replace((':AG:'+agent["name"]),'')
         agent["row"], agent["col"] = move_dict[move]
         self.board[agent["row"], agent["col"]]+=(':AG:'+agent["name"])
+        
+    def goal_check(self):
+        colorMap = {'R':'red', 'Y':'yellow', 'G':'green', 'B':'blue'}
+        agent = getattr(self, colorMap[self.goal['color']])
+        if agent['row'] == self.goal['row'] and agent['col'] == self.goal['col']:
+            return True
+        else:
+            return False
+    
 
     # Helper Functions
 

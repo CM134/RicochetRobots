@@ -15,7 +15,7 @@ class Visualizer:
     #radius = SQUARE_SIZE//2 - PADDING
     def __init__(self,instance):
         self.game = instance.board
-        print(self.game)
+        # print(self.game)
         self.ricochet = instance
         #print(self.game[0,:])
         #print(self.game[:,0])
