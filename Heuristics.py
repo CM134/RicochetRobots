@@ -1,14 +1,11 @@
 # Pseudo code for implementation of the AI.
-from tkinter.tix import CELL
-from types import CellType
 from ricochet import Ricochet
-from visualizer import Visualizer
 import copy
-import pdb
 import numpy as np
+import matplotlib.pyplot as plt
 
 
-class Solver:
+class Heuristics:
     def __init__(self, GAME):
         colorMap = {'R': 'red', 'Y': 'yellow', 'G': 'green', 'B': 'blue'}
         self.goal = GAME.goal
@@ -42,7 +39,7 @@ class Solver:
         visited.append(root_pos)
         path[root_pos] = []
         weight = 0
-        while len(queue) is not 0:
+        while len(queue) != 0:
             pos = queue.pop(0)
             # print(pos)
             self.agent['row'] = pos[0]
@@ -53,19 +50,19 @@ class Solver:
                 # search each cell on path
                 cell_list = []
                 if dir == 'UP':
-                    for row in range(self.agent["row"], move_dir[0], -1):
+                    for row in range(self.agent["row"], move_dir[0]-1, -1):
                         cell = (row, self.agent["col"])
                         cell_list.append(cell)
                 if dir == 'DOWN':
-                    for row in range(self.agent["row"], move_dir[0]):
+                    for row in range(self.agent["row"], move_dir[0]+1):
                         cell = (row, self.agent["col"])
                         cell_list.append(cell)
                 if dir == 'RIGHT':
-                    for col in range(self.agent["col"], move_dir[1]):
+                    for col in range(self.agent["col"], move_dir[1]+1):
                         cell = (self.agent["row"], col)
                         cell_list.append(cell)
                 if dir == 'LEFT':
-                    for col in range(self.agent["col"], move_dir[1], -1):
+                    for col in range(self.agent["col"], move_dir[1]-1, -1):
                         cell = (self.agent["row"], col)
                         cell_list.append(cell)
 
@@ -76,7 +73,6 @@ class Solver:
                         visited.append(cell)
 
                 weight += 1
-
         return goal_matrix
 
     def heuristics_other(self):
@@ -95,7 +91,6 @@ class Solver:
         queue = []
 
         root_pos = goal
-        inter_matrix[root_pos] = 0
         pos = root_pos
 
         queue.append(root_pos)
@@ -110,36 +105,36 @@ class Solver:
             # search each cell on path
             cell_list = []
             if dir == 'UP':
-                for row in range(self.agent["row"], move_dir[0], -1):
-                    if self.agent["col"] != 0:  # otherwise out of range
+                for row in range(self.agent["row"], move_dir[0]-1, -1):
+                    if self.agent["col"] > 0:  # otherwise out of range
                         cell = (row, self.agent["col"]-1)
                         cell_list.append(cell)
-                    if self.agent["col"] != len(self.board)-1:
+                    if self.agent["col"] < (len(self.board)-1):
                         cell = (row, self.agent["col"]+1)
                         cell_list.append(cell)
             if dir == 'DOWN':
-                for row in range(self.agent["row"], move_dir[0]):
-                    if self.agent["col"] != 0:
+                for row in range(self.agent["row"], move_dir[0]+1):
+                    if self.agent["col"] > 0:
                         cell = (row, self.agent["col"]-1)
                         cell_list.append(cell)
-                    if self.agent["col"] != len(self.board)-1:
+                    if self.agent["col"] < (len(self.board)-1):
                         cell = (row, self.agent["col"]+1)
                         cell_list.append(cell)
             if dir == 'RIGHT':
-                for col in range(self.agent["col"], move_dir[1]):
-                    if self.agent["row"] != 0:
-                        cell = (self.agent["row"], col-1)
+                for col in range(self.agent["col"], move_dir[1]+1):
+                    if self.agent["row"] > 0:
+                        cell = (self.agent["row"]-1, col)
                         cell_list.append(cell)
-                    if self.agent["row"] != len(self.board)-1:
-                        cell = (self.agent["row"], col-1)
+                    if self.agent["row"] < (len(self.board)-1):
+                        cell = (self.agent["row"]+1, col)
                         cell_list.append(cell)
             if dir == 'LEFT':
-                for col in range(self.agent["col"], move_dir[1]):
-                    if self.agent["row"] != 0:
-                        cell = (self.agent["row"], col-1)
+                for col in range(self.agent["col"], move_dir[1]-1,-1):
+                    if self.agent["row"] > 0:
+                        cell = (self.agent["row"]-1, col)
                         cell_list.append(cell)
-                    if self.agent["row"] != len(self.board)-1:
-                        cell = (self.agent["row"], col-1)
+                    if self.agent["row"] < (len(self.board)-1):
+                        cell = (self.agent["row"]+1, col)
                         cell_list.append(cell)
 
             for cell in cell_list:
@@ -147,10 +142,10 @@ class Solver:
                     inter_matrix[cell] = weight
                     queue.append(cell)
                     visited.append(cell)
-
+        
         # GOAL SEARCH
 
-        while len(queue) is not 0:
+        while len(queue) != 0:
             pos = queue.pop(0)
             # print(pos)
             self.agent['row'] = pos[0]
@@ -161,54 +156,61 @@ class Solver:
                 # search each cell on path
                 cell_list = []
                 if dir == 'UP':
-                    for row in range(self.agent["row"], move_dir[0], -1):
+                    for row in range(self.agent["row"], move_dir[0]-1, -1):
                         cell = (row, self.agent["col"])
                         cell_list.append(cell)
                 if dir == 'DOWN':
-                    for row in range(self.agent["row"], move_dir[0]):
+                    for row in range(self.agent["row"], move_dir[0]+1):
                         cell = (row, self.agent["col"])
                         cell_list.append(cell)
                 if dir == 'RIGHT':
-                    for col in range(self.agent["col"], move_dir[1]):
+                    for col in range(self.agent["col"], move_dir[1]+1):
                         cell = (self.agent["row"], col)
                         cell_list.append(cell)
                 if dir == 'LEFT':
-                    for col in range(self.agent["col"], move_dir[1], -1):
+                    for col in range(self.agent["col"], move_dir[1]-1, -1):
                         cell = (self.agent["row"], col)
                         cell_list.append(cell)
-
+                        
                 for cell in cell_list:
                     if cell not in visited:
                         inter_matrix[cell] = inter_matrix[pos]+1
                         queue.append(cell)
                         visited.append(cell)
-
-        return inter_matrix + self.goal_matrix
+                        
+                inter_matrix[root_pos] = 10
+            self.inter = inter_matrix
+        return inter_matrix #+ np.ceil(self.goal_matrix/2)
 
 
 if __name__ == "__main__":
     game = Ricochet()
+    game.goal = {'color': 'R', 'num': 3, 'row': 12, 'col': 14}
     print(game.goal)
 
-    solve = Solver(game)
+    solve = Heuristics(game)
     print(solve.agent)
     print(solve.goal)
+    
+    # goal_matrix = solve.heuristics_goal()
+    goal_matrix = solve.goal_matrix
+    # print(goal_matrix)
 
+    
+    plt.imshow(goal_matrix, cmap='hot', interpolation='nearest')
+    plt.show()
+
+    plt.imshow(solve.inter, cmap='hot', interpolation='nearest')
+    plt.show()
+    
     # other_matrix = solve.heuristics_other()
     other_matrix = solve.other_matrix
-    print(other_matrix)
+    # print(other_matrix)
 
-    import matplotlib.pyplot as plt
     plt.imshow(other_matrix, cmap='hot', interpolation='nearest')
     plt.show()
 
-    # goal_matrix = solve.heuristics_goal()
-    goal_matrix = solve.goal_matrix
-    print(goal_matrix)
-
-    import matplotlib.pyplot as plt
-    plt.imshow(goal_matrix, cmap='hot', interpolation='nearest')
-    plt.show()
+    
 
     # print(solve.path)
     # for solver.path do move

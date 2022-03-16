@@ -61,5 +61,6 @@ goal_list = [{'color':'Y',  'num':1,  'row':1,   'col':9},
              {'color':'G',  'num':2,  'row':6,   'col':10},
              {'color':'G',  'num':3,  'row':12,  'col':1},
              {'color':'G',  'num':4,  'row':14,  'col':11},
-             {'color':'YBRG','num':1, 'row':7,   'col':13}]
+            #  {'color':'YBRG','num':1, 'row':7,   'col':13}
+             ]
              
