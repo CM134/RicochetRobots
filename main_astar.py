@@ -6,6 +6,9 @@ from board_layouts.board_1 import goal_list
 import pygame
 from a_star import AStar
 import time
+import random
+
+random.seed(123)
 
 pygame.init()
 
@@ -42,34 +45,33 @@ def main():
 
     game = Ricochet()
 
-    # game.goal = {'color': 'B', 'num': 2, 'row': 5, 'col': 14}
-    # game.blue["row"] = 2
-    # game.blue["col"] = 11
+    game.goal = {'color': 'B', 'num': 2, 'row': 3, 'col': 5}
+    game.blue["row"] = 2
+    game.blue["col"] = 11
 
-    # game.red["row"] = 6
-    # game.red["col"] = 5n
+    game.red["row"] = 6
+    game.red["col"] = 2
 
-    # game.yellow["row"] = 11
-    # game.yellow["col"] = 10
+    game.yellow["row"] = 1
+    game.yellow["col"] = 4
 
-    # game.green["row"] = 15
-    # game.green["col"] = 13
-    #---------------------------------
+    game.green["row"] = 13
+    game.green["col"] = 13
+    # #---------------------------------
     game.goal = {'color': 'R', 'num': 3, 'row': 12, 'col': 14}
-    
+
     game.blue["row"] = 4
     game.blue["col"] = 15
 
     game.red["row"] = 0
     game.red["col"] = 14
-    ## ------------------
-    
+    # ------------------
+
     visu = Visualizer(game)
     visu.draw_board(WIN)
 
     pygame.display.update()
-    
-    
+
     print("Goal: ", game.goal)
 
     astar = None
@@ -78,9 +80,6 @@ def main():
     print("Goal path: ", astar.path)
     if astar.path is None:
         print('No solution found')
-        
-    
-
 
     while run:
         clock.tick(FPS)
@@ -96,7 +95,6 @@ def main():
         ######## AI ###########
         if astar.path is not None:
             move = astar.path[cnt]
-            
 
             color = move[0]
             ag = getattr(game, color)

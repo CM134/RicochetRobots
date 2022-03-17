@@ -180,12 +180,12 @@ class Heuristics:
                         
                 inter_matrix[root_pos] = 10
             self.inter = inter_matrix
-        return inter_matrix #+ np.ceil(self.goal_matrix/2)
+        return inter_matrix + np.ceil(self.goal_matrix/2)
 
 
 if __name__ == "__main__":
     game = Ricochet()
-    game.goal = {'color': 'R', 'num': 3, 'row': 12, 'col': 14}
+    game.goal = {'color': 'B', 'num': 2, 'row': 5, 'col': 14}
     print(game.goal)
 
     solve = Heuristics(game)

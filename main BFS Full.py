@@ -6,6 +6,9 @@ from board_layouts.board_1 import goal_list
 import pygame
 from BFS_solver_full import Solver
 import time
+import random
+
+random.seed(123)
 
 pygame.init()
 
@@ -54,6 +57,18 @@ def main():
 
     # game.green["row"] = 15
     # game.green["col"] = 13
+    #===========================
+    # game.goal = {'color': 'B', 'num': 2, 'row': 3, 'col': 5}
+    # game.blue["row"] = 2
+    # game.blue["col"] = 11
+
+    # game.red["row"] = 6
+    # game.red["col"] = 2
+
+    # game.yellow["row"] = 1
+    # game.yellow["col"] = 4
+
+    # game.green["row"] = 15
     
     visu = Visualizer(game)
     visu.draw_board(WIN)

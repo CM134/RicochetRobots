@@ -24,7 +24,7 @@ class Node():
         return self.position == other.position
 
 
-class AStar:
+class Dijkstra:
     def __init__(self, game):
         self.colorMap = {'R':'red', 'Y':'yellow', 'G':'green', 'B':'blue'}
         self.goal = game.goal
@@ -41,7 +41,7 @@ class AStar:
         self.h_goal = H.goal_matrix
         self.h_other = H.other_matrix
         
-        self.path = self.astar()
+        self.path = self.dijkstra()
         
     def getPoses(self):
         ag_ = []
@@ -56,7 +56,7 @@ class AStar:
             ag_i["row"] = pos_[i_][0]
             ag_i["col"] = pos_[i_][1]
             
-    def astar(self):
+    def dijkstra(self):
         """Returns a list of tuples as a path from the given start to the given end in the given maze"""
         deepest_depth = 0
         # Create start
@@ -122,15 +122,7 @@ class AStar:
                     new_node.color = self.colorMap[ag['name']]
                     
                     if new_node not in closed_list:
-                        try:
-                            idx = open_list.index(new_node) # fails if node not in list
-                            new_node.g = current_node.g + 1
-                            open_node = open_list[idx]
-                            if new_node.g < open_node.g:
-                                children.append(new_node)
-                                open_list.remove(open_node)
-                                closed_list.append(open_node)
-                        except:
+                       if new_node not in open_list:
                             children.append(new_node)
 
             # Loop through children
@@ -148,7 +140,7 @@ class AStar:
                     child.h = self.h_goal[child.position[0]]
                 else:
                     child.h = self.h_other[child.position[child.agent_nr]]
-                child.f = child.g + child.h
+                child.f = child.h
 
                 # Child is already in the open list
                 # for open_node in open_list:
@@ -181,7 +173,7 @@ if __name__ == "__main__":
     game.green["col"] = 13
 
     print(game.goal)
-    solve = AStar(game)
+    solve = Dijkstra(game)
     print(solve.agent0)
     print(solve.goal)
     print(solve.path)
