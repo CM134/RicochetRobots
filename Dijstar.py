@@ -68,8 +68,6 @@ class Dijkstra:
         # Initialize both open and closed list
         open_list = []
         closed_list = []
-        # queue = [root_pos]
-        # visited = []
 
         # Add the start node
         open_list.append(start_node)
@@ -127,12 +125,6 @@ class Dijkstra:
 
             # Loop through children
             for child in children:
-
-                # # Child is on the closed list
-                # for closed_child in closed_list:
-                #     if child == closed_child:
-                #         continue
-
                 # Create the f, g, and h values
                 
                 child.g = current_node.g + 1   # comment this and you get greedy search
@@ -140,12 +132,7 @@ class Dijkstra:
                     child.h = self.h_goal[child.position[0]]
                 else:
                     child.h = self.h_other[child.position[child.agent_nr]]
-                child.f = child.h
-
-                # Child is already in the open list
-                # for open_node in open_list:
-                #     if child == open_node and child.g > open_node.g:
-                #         continue
+                child.f = child.h 
 
                 # Add the child to the open list
                 open_list.append(child)

@@ -1,4 +1,8 @@
 # %%
+import random
+
+random.seed(123)
+
 from ricochet import Ricochet
 from visualizer import Visualizer
 from constants import *
@@ -6,9 +10,7 @@ from board_layouts.board_1 import goal_list
 import pygame
 from BFS_solver_full import Solver
 import time
-import random
 
-random.seed(123)
 
 pygame.init()
 

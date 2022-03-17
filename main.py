@@ -92,12 +92,7 @@ def main():
                 Robot_moves += 1
             Old_key = 'DOWN'
 
-        # TODO:
-        # goal check -> assign new goal game.setGoal()
 
-        # Celebrate we made it to the goal
-
-        # print(goal_list[0])#['color'])
 
         visu.draw_board(WIN)
 

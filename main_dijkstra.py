@@ -1,15 +1,15 @@
 # %%
+
 import random
 
 random.seed(123)
 
-from tracemalloc import start
 from ricochet import Ricochet
 from visualizer import Visualizer
 from constants import *
 from board_layouts.board_1 import goal_list
 import pygame
-from a_star import AStar
+from Dijstar import Dijkstra
 import time
 
 
@@ -42,7 +42,6 @@ def show_text(win, x, y, solver, time, comp_time):
     win.blit(amount_of_moves, (x, y))
     win.blit(time_in_s, (x, y+50))
     win.blit(time_sol, (x, y+100))
-        
 
 
 def main():
@@ -81,28 +80,30 @@ def main():
     visu = Visualizer(game)
     visu.draw_board(WIN)
     
-    solver = None
-    show_text(WIN,820,50,solver,passed_time,0)
+    dijkstra = None
+    show_text(WIN,820,50,dijkstra,passed_time,0)
 
     pygame.display.update()
 
     print("Goal: ", game.goal)
 
     start_time = time.time()
-    
-    solver = AStar(game)
-    print("Goal: ", solver.goal)
-    print("Goal path: ", solver.path)
-    if solver.path is None:
+
+  
+    dijkstra = Dijkstra(game)
+    print("Goal: ", dijkstra.goal)
+    print("Goal path: ", dijkstra.path)
+    if dijkstra.path is None:
         print('No solution found')
-    
+        
     stop_time = time.time()
     comp_time = stop_time - start_time
     comp_time = round(comp_time,1)
-    
+
     while run:
         clock.tick(FPS)
         visu.draw_board(WIN)
+
 
         passed_time = pygame.time.get_ticks()
 
@@ -111,11 +112,10 @@ def main():
                 run = False
 
         keys_pressed = pygame.key.get_pressed()
-        
 
         ######## AI ###########
-        if solver.path is not None:
-            move = solver.path[cnt]
+        if dijkstra.path is not None:
+            move = dijkstra.path[cnt]
 
             color = move[0]
             ag = getattr(game, color)
@@ -136,10 +136,7 @@ def main():
         else:
             break
 
-        # visu.draw_board(WIN)
-        
-        show_text(WIN,820,50,solver,passed_time,comp_time)
-
+        show_text(WIN,820,50,dijkstra,passed_time,comp_time)
         pygame.display.update()
 
         if game.goal_check():
