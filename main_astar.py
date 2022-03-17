@@ -1,7 +1,7 @@
 # %%
 import random
 
-random.seed(123)
+random.seed(15)
 
 from tracemalloc import start
 from ricochet import Ricochet
@@ -47,8 +47,6 @@ def show_text(win, x, y, solver, time, comp_time):
 
 def main():
     cnt = 0
-    Robot_moves = 0
-    Old_key = None
     run = True
     clock = pygame.time.Clock()
 
@@ -56,26 +54,26 @@ def main():
 
     game = Ricochet()
 
-    game.goal = {'color': 'B', 'num': 2, 'row': 3, 'col': 5}
-    game.blue["row"] = 2
-    game.blue["col"] = 11
+    # game.goal = {'color': 'B', 'num': 2, 'row': 3, 'col': 5}
+    # game.blue["row"] = 2
+    # game.blue["col"] = 11
 
-    game.red["row"] = 6
-    game.red["col"] = 2
+    # game.red["row"] = 6
+    # game.red["col"] = 2
 
-    game.yellow["row"] = 1
-    game.yellow["col"] = 4
+    # game.yellow["row"] = 1
+    # game.yellow["col"] = 4
 
-    game.green["row"] = 13
-    game.green["col"] = 13
-    # #---------------------------------
-    game.goal = {'color': 'R', 'num': 3, 'row': 12, 'col': 14}
+    # game.green["row"] = 13
+    # game.green["col"] = 13
+    # # #---------------------------------
+    # game.goal = {'color': 'R', 'num': 3, 'row': 12, 'col': 14}
 
-    game.blue["row"] = 4
-    game.blue["col"] = 15
+    # game.blue["row"] = 4
+    # game.blue["col"] = 15
 
-    game.red["row"] = 0
-    game.red["col"] = 14
+    # game.red["row"] = 0
+    # game.red["col"] = 14
     # ------------------
 
     visu = Visualizer(game)
@@ -112,7 +110,6 @@ def main():
 
         keys_pressed = pygame.key.get_pressed()
         
-
         ######## AI ###########
         if solver.path is not None:
             move = solver.path[cnt]
@@ -120,32 +117,56 @@ def main():
             color = move[0]
             ag = getattr(game, color)
             visu.selected = ag
+    
+        # show path
 
-        ######## Draw the selected robot ##########
+        if keys_pressed[pygame.K_n]:
+            time.sleep(0.5)
+            game.move(ag, move[1])
+            cnt += 1
+        
+        visu.draw_board(WIN)
+
+         ######## Draw the selected robot ##########
         if visu.selected is not None:
             pygame.draw.circle(WIN, BLACK, ((SQUARE_SIZE//2)+SQUARE_SIZE *
                                visu.selected['col'], (SQUARE_SIZE//2)+SQUARE_SIZE*visu.selected['row']), radius-10)
 
-            # show path
-
-            if keys_pressed[pygame.K_n]:
-                time.sleep(0.5)
-                game.move(ag, move[1])
-                cnt += 1
-
-        else:
-            break
-
-        # visu.draw_board(WIN)
-        
         show_text(WIN,820,50,solver,passed_time,comp_time)
 
         pygame.display.update()
 
         if game.goal_check():
             print('!!!GOAL REACHED!!!')
+            print('New goal is set in 3 sec')
             time.sleep(3)
-            break
+            cnt = 0
+            if len(game.goals_remain) != 0:
+                game.setGoal()
+                print("Goal: ", game.goal)
+                visu.draw_board(WIN)
+
+                # Re init AI game:
+                passed_time = 0
+                solver = None
+                show_text(WIN,820,50,solver,passed_time,0)
+                pygame.display.update()
+                
+
+                start_time = time.time()
+                solver = AStar(game)
+                print("Goal path: ", solver.path)
+                if solver.path is None:
+                    print('No solution found')
+                stop_time = time.time()
+                comp_time = stop_time - start_time
+                comp_time = round(comp_time,1)
+                
+            else:
+                print('no more goals, game over')
+                break
+
+        
     pygame.quit()
 
 

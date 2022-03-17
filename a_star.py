@@ -68,8 +68,6 @@ class AStar:
         # Initialize both open and closed list
         open_list = []
         closed_list = []
-        # queue = [root_pos]
-        # visited = []
 
         # Add the start node
         open_list.append(start_node)
@@ -129,17 +127,12 @@ class AStar:
                             if new_node.g < open_node.g:
                                 children.append(new_node)
                                 open_list.remove(open_node)
-                                closed_list.append(open_node)
                         except:
                             children.append(new_node)
 
             # Loop through children
             for child in children:
 
-                # # Child is on the closed list
-                # for closed_child in closed_list:
-                #     if child == closed_child:
-                #         continue
 
                 # Create the f, g, and h values
                 
@@ -150,10 +143,6 @@ class AStar:
                     child.h = self.h_other[child.position[child.agent_nr]]
                 child.f = child.g + child.h
 
-                # Child is already in the open list
-                # for open_node in open_list:
-                #     if child == open_node and child.g > open_node.g:
-                #         continue
 
                 # Add the child to the open list
                 open_list.append(child)

@@ -2,6 +2,7 @@
 
 import numpy as np
 import random
+import copy
 
 from board_layouts.board_1 import board, goal_list, SIZE
 
@@ -25,7 +26,8 @@ class Ricochet:
         self.green = self.initAgent('G')
         self.agent_list.append(self.green)
         
-        self.goal_list = goal_list
+        self.goal_list = goal_list.copy()
+        self.goals_remain = goal_list.copy()
         self.setGoal()
         
 
@@ -80,7 +82,8 @@ class Ricochet:
         return {"name": color, "row": idx_row, "col": idx_col}
         
     def setGoal(self):
-        self.goal = random.choice(goal_list)
+        rand_idx = random.randint(0,len(self.goals_remain)-1)
+        self.goal = self.goals_remain.pop(rand_idx)
         
     def availableMoves(self, agent):
         """computes all available endpositions for the moves as a dict. An Agent cannot collide with any wall or agent. 

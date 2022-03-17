@@ -87,6 +87,23 @@ class Visualizer:
                 
                 # Draw Center goal 
                 pygame.draw.rect(win,(173,216,230), (HEIGHT//2-SQUARE_SIZE,WIDTH//2-SQUARE_SIZE,2*SQUARE_SIZE,2*SQUARE_SIZE))
+                
+                
+                goal_active = self.ricochet.goal
+                if goal_active["color"] == 'Y':
+                    goal_color = (255,255,0)
+                if goal["color"] == 'G':
+                    goal_color = (0,255,0) 
+                if goal_active["color"] == 'B':
+                    goal_color = (0,0,255) 
+                if goal_active["color"] == 'R':
+                    goal_color = (255,0,0)
+                
+                pygame.draw.rect(win,goal_color, (HEIGHT//2-SQUARE_SIZE,WIDTH//2-SQUARE_SIZE,1.5*SQUARE_SIZE,1.5*SQUARE_SIZE))
+                goal_number = font.render(str(goal_active['num']),True,BLACK)
+                win.blit(goal_number, (HEIGHT//2-SQUARE_SIZE,WIDTH//2-SQUARE_SIZE))
+
+
 
 
 
