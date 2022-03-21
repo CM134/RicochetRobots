@@ -17,6 +17,6 @@ Download all required packages:
 - pip install -r requirements.txt
 
 Test game with the different algorithms:
-'''
+```
 python main_AI.py
-'''
+```
