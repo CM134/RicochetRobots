@@ -92,7 +92,7 @@ class Visualizer:
                 goal_active = self.ricochet.goal
                 if goal_active["color"] == 'Y':
                     goal_color = (255,255,0)
-                if goal["color"] == 'G':
+                if goal_active["color"] == 'G':
                     goal_color = (0,255,0) 
                 if goal_active["color"] == 'B':
                     goal_color = (0,0,255) 
