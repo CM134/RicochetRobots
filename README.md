@@ -20,3 +20,8 @@ Test game with the different algorithms:
 ```
 python main_AI.py
 ```
+
+For a human game run
+```
+python main.py
+```
