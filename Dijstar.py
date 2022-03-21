@@ -1,6 +1,7 @@
 from Heuristics import Heuristics
 from ricochet import Ricochet
 import copy
+import time
 
 class Node():
     """A node class for A* Pathfinding"""
@@ -69,8 +70,9 @@ class Dijkstra:
         # Add the start node
         open_list.append(start_node)
 
-        # Loop until you find the end
-        while len(open_list) > 0:
+        # Loop until you find the end or 1 minute passes without a solution
+        time0 = time.time()
+        while ((time.time()-time0) < 60) and len(open_list) > 0:
 
             # Get the current node with lowest f
             current_node = open_list[0]
@@ -139,7 +141,8 @@ class Dijkstra:
                     print('deepest search depth', deepest_depth)
                     print('OPEN size: ', len(open_list))
                     print('CLOSED size: ', len(closed_list))
-                
+        return None #Return None as path if unable to find within constrains
+
 if __name__ == "__main__":
 
     game = Ricochet()

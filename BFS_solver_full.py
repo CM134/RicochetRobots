@@ -33,7 +33,7 @@ class Solver:
             ag_i["row"] = pos_[i_][0]
             ag_i["col"] = pos_[i_][1]
 
-    #Moves up the graph between 
+    #Moves up the graph between each child-parent pair
     def backtracePath(self, pth, goalPos):
         parent = 1
         goalPath = []
@@ -43,7 +43,8 @@ class Solver:
         while depth_ > 1:
             parent_, depth_, colorDir_ = pth[parent_]
             goalPath.append(colorDir_)
-        return goalPath.reverse()
+        goalPath.reverse()
+        return goalPath
 
     def BFS(self):
         goal = ((self.goal["row"], self.goal["col"]))
@@ -76,8 +77,7 @@ class Solver:
                         if (move_dir == goal) and i == 0:
                             print("FOUND GOAL!!!!")
                             path[new_pos] = (pos, path[pos][1]+1, (self.colorMap[ag['name']], dir))
-                            self.path = self.backtracePath(path, new_pos)
-                            return path
+                            return self.backtracePath(path, new_pos)
                         queue.append(new_pos)
                         visited.append(new_pos)
                         path[new_pos] = (pos, path[pos][1]+1, (self.colorMap[ag['name']], dir))
@@ -87,6 +87,7 @@ class Solver:
                             print('queue length:', len(queue))
                             print('visited length:', len(visited))
                             depth_old = depth
+        return None #Return None as path if unable to find within constrains
 
 if __name__ == "__main__":
 

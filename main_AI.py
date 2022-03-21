@@ -34,7 +34,7 @@ pygame.display.set_caption('Ricochet Robots!')
 
 
 def show_text(win, x, y, solver, time, comp_time,selected_solver):
-    if solver is not None:
+    if (solver is not None) and (solver.path is not None):
         amount_of_moves = font.render("AI Path Length: " + str(len(solver.path)), True, BLACK)
         instruct = font.render('move by pressing N',True,BLACK)
         win.blit(instruct, (x, y+150))
@@ -100,15 +100,19 @@ def main():
         # get keyboard and set
         if keys_pressed[pygame.K_s]:
             solver = BFS_S(game)
+            eval_call = "BFS_S(game)"
             selected_solver = 'BFS single'
         if keys_pressed[pygame.K_b]:
             solver = BFS(game)
+            eval_call = "BFS(game)"
             selected_solver = 'BFS full'
         if keys_pressed[pygame.K_a]:
             solver = AStar(game)
+            eval_call = "AStar(game)"
             selected_solver = 'A*'
         if keys_pressed[pygame.K_g]:
             solver = Dijkstra(game)
+            eval_call = "Dijkstra(game)"
             selected_solver = 'Greedy'
 
     visu.draw_board(WIN)
@@ -120,7 +124,8 @@ def main():
 
     start_time = time.time()
     
-    solver = AStar(game)
+    #solver = AStar(game)
+    solver = eval(eval_call)
     print("Goal: ", solver.goal)
     print("Goal path: ", solver.path)
     if solver.path is None:
@@ -186,10 +191,12 @@ def main():
                 
 
                 start_time = time.time()
-                solver = AStar(game)
+                #solver = AStar(game)
+                solver = eval(eval_call)
                 print("Goal path: ", solver.path)
                 if solver.path is None:
                     print('No solution found')
+
                 stop_time = time.time()
                 comp_time = stop_time - start_time
                 comp_time = round(comp_time,1)
