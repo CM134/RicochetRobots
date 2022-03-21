@@ -1,8 +1,6 @@
 # Pseudo code for implementation of the AI.
 from ricochet import Ricochet
-from visualizer import Visualizer
 import copy
-import pdb
 
 class Solver:
     def __init__(self, GAME):

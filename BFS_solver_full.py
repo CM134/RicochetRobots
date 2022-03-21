@@ -1,8 +1,5 @@
-# Pseudo code for implementation of the AI.
 from ricochet import Ricochet
-from visualizer import Visualizer
 import copy
-import pdb
 from collections import deque
 import time
 
@@ -35,6 +32,8 @@ class Solver:
             ag_i = getattr(self, "agent"+str(i_))
             ag_i["row"] = pos_[i_][0]
             ag_i["col"] = pos_[i_][1]
+
+    #Moves up the graph between 
     def backtracePath(self, pth, goalPos):
         parent = 1
         goalPath = []
@@ -57,7 +56,6 @@ class Solver:
         queue.append(root_pos)
         visited.append(root_pos)
         path[root_pos] = (None, 0, (None, None)) # (Parent, Depth (Color, Direction))
-        #path[root_pos] = []
         depth = 0
         depth_old = depth
         time0 = time.time()
@@ -77,24 +75,18 @@ class Solver:
                     if new_pos not in visited:
                         if (move_dir == goal) and i == 0:
                             print("FOUND GOAL!!!!")
-                            #path[new_pos] = path[pos].copy()
                             path[new_pos] = (pos, path[pos][1]+1, (self.colorMap[ag['name']], dir))
-                            #path[new_pos].append((self.colorMap[ag['name']], dir))
-                            #pdb.set_trace()
                             self.path = self.backtracePath(path, new_pos)
-                            return path#path[new_pos]
+                            return path
                         queue.append(new_pos)
                         visited.append(new_pos)
-                        #path[new_pos] = path[pos].copy()
                         path[new_pos] = (pos, path[pos][1]+1, (self.colorMap[ag['name']], dir))
-                        #path[new_pos].append((self.colorMap[ag['name']], dir))
                         depth = path[new_pos][1]
                         if depth > depth_old:
                             print('depth:', depth)
                             print('queue length:', len(queue))
                             print('visited length:', len(visited))
                             depth_old = depth
-
 
 if __name__ == "__main__":
 
@@ -104,5 +96,4 @@ if __name__ == "__main__":
     solve = Solver(game)
     print(solve.agent0)
     print(solve.goal)
-    #print(solve.path)
-    # for solver.path do move
+    print(solve.path)

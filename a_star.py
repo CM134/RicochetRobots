@@ -1,9 +1,6 @@
-import numpy as np
 from Heuristics import Heuristics
 from ricochet import Ricochet
 import copy
-
-
 
 class Node():
     """A node class for A* Pathfinding"""

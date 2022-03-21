@@ -1,6 +1,4 @@
 
-import pygame
-
 # Constants
 
 WIDTH, HEIGHT = 800,800

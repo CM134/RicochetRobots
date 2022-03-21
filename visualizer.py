@@ -1,5 +1,3 @@
-#Pseudo code
-
 from ricochet import Ricochet
 from constants import *
 import numpy as np
